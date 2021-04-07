@@ -42,15 +42,17 @@ public class ChessGUI {
             }
         }
         setDefaultColors();
+        setChessImages();
         game.setUp(new StandardGame());
-        playTurn();
     }
 
     /**
-     * where you make and get moves from game and change the visual board behavior accordingly
+     * Get the possible moves from the game and send to unclicked buttons
+     * if no moves, game ends in checkmate here
      */
-    private void playTurn() {
+    public void playTurn() {
         setDefaultColors();
+        resetActionListeners();
         ArrayList<String> moves = game.getMoves();
         unclickedButtons(moves);
         //checkmate
@@ -60,7 +62,7 @@ public class ChessGUI {
     }
 
     /**
-     * takes the start coordinates and makes the buttons interactive
+     * takes the start coordinates and calls setMovablePieceAction on the correct squares and passes their moveTos with it
      */
     private void unclickedButtons(ArrayList<String> moves) {
         ArrayList<String> movablePieces = new ArrayList<String>();
@@ -84,52 +86,9 @@ public class ChessGUI {
             int[] coord = board.convertCoord(movablePieces.get(i));
             ChessButton button = chessBoardSquares[coord[0]][coord[1]];
             setMovablePieceAction(button,moveTo,movablePieces.get(i));
-//            button.addActionListener(new ActionListener() {
-//                //button should set the moveTo squares interactive and green
-//                @Override
-//                public void actionPerformed(ActionEvent e) {
-//                    for (int k=0; k<moveTo.size(); k++) {
-//                        JButton b = new JButton();
-//                        b.setMargin(new Insets(50, 50, 50, 50));
-//                        b.setOpaque(true);
-//                        b.setBorderPainted(false);
-//                        b.setBackground(Color.green);
-//                        //selecting the button of a square to move to should play the move
-//                        int finalK = k;
-////                        b.addActionListener(new ActionListener() {
-////                            @Override
-////                            public void actionPerformed(ActionEvent e){
-////                                game.playMove(movablePieces.get(finalI) +":"+ moveTo.get(finalK));
-////                                update();
-////                            }
-////                        });
-//                        int[] coord = board.convertCoord(moveTo.get(k));
-//                        chessBoardSquares[coord[0]][coord[1]] = b;
-//                    }
-//                }
-//            });
         }
     }
-//
-//    /**
-//     * resets the board to default colors, and sets pieces as they appear in board
-//     */
-//    private void update() {
-//        chessBoard = new JPanel(new GridLayout(8, 8));
-//        chessBoardSquares = new JButton[8][8];
-//        for (int i=0; i<8; i++) {
-//            for (int j = 0; j < 8; j++) {
-//                JButton b = new JButton();
-//                b.setMargin(new Insets(0, 0, 0, 0));
-//                b.setOpaque(true);
-//                b.setBorderPainted(true);
-//                chessBoardSquares[i][j] = b;
-//                chessBoard.add(b);
-//            }
-//        }
-//        setDefaultColors();
-//    }
-//
+
     /**
      * sets chess board to a standard chess board coloring
      */
@@ -157,6 +116,9 @@ public class ChessGUI {
         }
     }
 
+    /**
+     * sets the actions for squares containing pieces that can move
+     */
     public void setMovablePieceAction(ChessButton b,ArrayList<String> moveTo,String pos) {
 
         ActionListener movable = new ActionListener() {
@@ -168,6 +130,15 @@ public class ChessGUI {
                     for (int j=0; j<8;j++) {
                         if(chessBoardSquares[i][j].getBackground() == Color.GREEN) {
                             chessBoardSquares[i][j].removeActionListener(chessBoardSquares[i][j].getCurAL());
+                        }
+                    }
+                }
+                //removing actions from previous moveTo squares
+                for (int i=0; i<8; i++) {
+                    for(int j=0; j<8; j++) {
+                        ChessButton button = chessBoardSquares[i][j];
+                        if (button.getMoveTo()) {
+                            button.removeActionListener(button.getCurAL());
                         }
                     }
                 }
@@ -185,6 +156,10 @@ public class ChessGUI {
         b.addActionListener(movable);
     }
 
+    /**
+     * sets up the destination squares after a movable piece is clicked
+     * should remove all other moveTo action listeners
+     */
     public void setMoveToPieceAction(ChessButton button, String pos, String move) {
         ActionListener moveto = new ActionListener() {
             @Override
@@ -195,11 +170,55 @@ public class ChessGUI {
                 playTurn();
             }
         };
+        button.setMoveTo(true);
         button.setCurAL(moveto);
         button.addActionListener(moveto);
     }
 
+    public void resetActionListeners() {
+        for (int i=0; i<8; i++){
+            for (int j=0; j<8; j++) {
+                ChessButton b = chessBoardSquares[i][j];
+                if (b.getCurAL() != null) {
+                    b.removeActionListener(b.getCurAL());
+                }
+            }
+        }
+    }
+
+    //Sets the images for chess pieces
+    public void setChessImages() {
+        //white pieces
+        chessBoardSquares[1][0].setIcon(new ImageIcon("./assets/whiteRook.png"));
+        chessBoardSquares[2][0].setIcon(new ImageIcon("./assets/whiteKnight.png"));
+        chessBoardSquares[3][0].setIcon(new ImageIcon("./assets/whiteBishop.png"));
+        chessBoardSquares[4][0].setIcon(new ImageIcon("./assets/whiteQueen.png"));
+        chessBoardSquares[5][0].setIcon(new ImageIcon("./assets/whiteKing.png"));
+        chessBoardSquares[6][0].setIcon(new ImageIcon("./assets/whiteBishop.png"));
+        chessBoardSquares[7][0].setIcon(new ImageIcon("./assets/whiteKnight.png"));
+        chessBoardSquares[8][0].setIcon(new ImageIcon("./assets/whiteRook.png"));
+        for (int i=0; i<8; i++) {
+            chessBoardSquares[i][1].setIcon(new ImageIcon("./assets/whitePawn.png"));
+        }
+        //black pieces
+        chessBoardSquares[1][7].setIcon(new ImageIcon("./assets/blackRook.png"));
+        chessBoardSquares[2][7].setIcon(new ImageIcon("./assets/blackKnight.png"));
+        chessBoardSquares[3][7].setIcon(new ImageIcon("./assets/blackBishop.png"));
+        chessBoardSquares[4][7].setIcon(new ImageIcon("./assets/blackQueen.png"));
+        chessBoardSquares[5][7].setIcon(new ImageIcon("./assets/blackKing.png"));
+        chessBoardSquares[6][7].setIcon(new ImageIcon("./assets/blackBishop.png"));
+        chessBoardSquares[7][7].setIcon(new ImageIcon("./assets/blackKnight.png"));
+        chessBoardSquares[8][7].setIcon(new ImageIcon("./assets/blackRook.png"));
+        for (int i=0; i<8; i++) {
+            chessBoardSquares[i][6].setIcon(new ImageIcon("./assets/blackPawn.png"));
+        }
+    }
+
     public JPanel getBoard(){
         return chessBoard;
+    }
+
+    public ChessButton[][] getChessBoardSquares() {
+        return chessBoardSquares;
     }
 }

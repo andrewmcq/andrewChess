@@ -34,7 +34,7 @@ public class StandardGame implements SetUp {
                     pieces[i][j] = new Rook(new RookBehaviorStartStandard());
                 }
                 else if (j>3) {
-                    pieces[i][j] = new Knight(new KingBehaviorStandard());
+                    pieces[i][j] = new Knight(new KnightBehaviorStandard());
                 }
                 else if (j>1) {
                     pieces[i][j] = new Bishop(new BishopBehaviorStandard());

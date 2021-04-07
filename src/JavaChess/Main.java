@@ -9,6 +9,7 @@ public class Main {
             public void run() {
                 ChessGUI gui = new ChessGUI();
                 JFrame f = new JFrame("andrewChess");
+                gui.playTurn();
                 f.add(gui.getBoard());
                 // Ensures JVM closes after frame(s) closed and
                 // all non-daemon threads are finished

@@ -5,10 +5,11 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 /**
- * has a move to attribute to allow the action listener to have an extra parameter
+ * has an current action listener attribute to make remove work easily
  */
 public class ChessButton extends JButton {
     private ActionListener curAL;
+    private boolean moveTo = false;
 
     public void setCurAL(ActionListener a) {
         curAL = a;
@@ -16,4 +17,7 @@ public class ChessButton extends JButton {
     public ActionListener getCurAL() {
         return curAL;
     }
+
+    public boolean getMoveTo() { return moveTo; }
+    public void setMoveTo(boolean moveTo) { this.moveTo = moveTo; }
 }
