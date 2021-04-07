@@ -189,26 +189,26 @@ public class ChessGUI {
     //Sets the images for chess pieces
     public void setChessImages() {
         //white pieces
-        chessBoardSquares[1][0].setIcon(new ImageIcon("./assets/whiteRook.png"));
-        chessBoardSquares[2][0].setIcon(new ImageIcon("./assets/whiteKnight.png"));
-        chessBoardSquares[3][0].setIcon(new ImageIcon("./assets/whiteBishop.png"));
-        chessBoardSquares[4][0].setIcon(new ImageIcon("./assets/whiteQueen.png"));
-        chessBoardSquares[5][0].setIcon(new ImageIcon("./assets/whiteKing.png"));
-        chessBoardSquares[6][0].setIcon(new ImageIcon("./assets/whiteBishop.png"));
-        chessBoardSquares[7][0].setIcon(new ImageIcon("./assets/whiteKnight.png"));
-        chessBoardSquares[8][0].setIcon(new ImageIcon("./assets/whiteRook.png"));
+        chessBoardSquares[0][0].setIcon(new ImageIcon("./assets/whiteRook.png"));
+        chessBoardSquares[1][0].setIcon(new ImageIcon("./assets/whiteKnight.png"));
+        chessBoardSquares[2][0].setIcon(new ImageIcon("./assets/whiteBishop.png"));
+        chessBoardSquares[3][0].setIcon(new ImageIcon("./assets/whiteQueen.png"));
+        chessBoardSquares[4][0].setIcon(new ImageIcon("./assets/whiteKing.png"));
+        chessBoardSquares[5][0].setIcon(new ImageIcon("./assets/whiteBishop.png"));
+        chessBoardSquares[6][0].setIcon(new ImageIcon("./assets/whiteKnight.png"));
+        chessBoardSquares[7][0].setIcon(new ImageIcon("./assets/whiteRook.png"));
         for (int i=0; i<8; i++) {
             chessBoardSquares[i][1].setIcon(new ImageIcon("./assets/whitePawn.png"));
         }
         //black pieces
-        chessBoardSquares[1][7].setIcon(new ImageIcon("./assets/blackRook.png"));
-        chessBoardSquares[2][7].setIcon(new ImageIcon("./assets/blackKnight.png"));
-        chessBoardSquares[3][7].setIcon(new ImageIcon("./assets/blackBishop.png"));
-        chessBoardSquares[4][7].setIcon(new ImageIcon("./assets/blackQueen.png"));
-        chessBoardSquares[5][7].setIcon(new ImageIcon("./assets/blackKing.png"));
-        chessBoardSquares[6][7].setIcon(new ImageIcon("./assets/blackBishop.png"));
-        chessBoardSquares[7][7].setIcon(new ImageIcon("./assets/blackKnight.png"));
-        chessBoardSquares[8][7].setIcon(new ImageIcon("./assets/blackRook.png"));
+        chessBoardSquares[0][7].setIcon(new ImageIcon("./assets/blackRook.png"));
+        chessBoardSquares[1][7].setIcon(new ImageIcon("./assets/blackKnight.png"));
+        chessBoardSquares[2][7].setIcon(new ImageIcon("./assets/blackBishop.png"));
+        chessBoardSquares[3][7].setIcon(new ImageIcon("./assets/blackQueen.png"));
+        chessBoardSquares[4][7].setIcon(new ImageIcon("./assets/blackKing.png"));
+        chessBoardSquares[5][7].setIcon(new ImageIcon("./assets/blackBishop.png"));
+        chessBoardSquares[6][7].setIcon(new ImageIcon("./assets/blackKnight.png"));
+        chessBoardSquares[7][7].setIcon(new ImageIcon("./assets/blackRook.png"));
         for (int i=0; i<8; i++) {
             chessBoardSquares[i][6].setIcon(new ImageIcon("./assets/blackPawn.png"));
         }
