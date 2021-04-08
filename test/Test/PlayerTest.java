@@ -4,6 +4,7 @@ import JavaChess.*;
 import JavaChess.ChessPieces.ActionsBehaviors.*;
 import JavaChess.ChessPieces.ChessPiece;
 import JavaChess.ChessPieces.*;
+import JavaChess.SetUp.StandardGame;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.*;
 
@@ -103,6 +104,96 @@ public class PlayerTest {
         moves = player.getAvailableMoves();
         assertTrue(moves.contains("A1:A2"));
         assertEquals(1,moves.size());
+    }
+
+    @Test
+    public void testAvailableMovesWithSetup() {
+        Game g = new Game();
+        g.setUp(new StandardGame());
+        player = g.getPlayers()[0];
+        opponent = g.getPlayers()[1];
+        ArrayList<String> moves = player.getAvailableMoves();
+        //pawn moves
+        assertTrue(moves.contains("A2:A3"));
+        assertTrue(moves.contains("A2:A4"));
+        assertTrue(moves.contains("B2:B3"));
+        assertTrue(moves.contains("B2:B4"));
+        assertTrue(moves.contains("C2:C3"));
+        assertTrue(moves.contains("C2:C4"));
+        assertTrue(moves.contains("D2:D3"));
+        assertTrue(moves.contains("D2:D4"));
+        assertTrue(moves.contains("E2:E3"));
+        assertTrue(moves.contains("E2:E4"));
+        assertTrue(moves.contains("F2:F3"));
+        assertTrue(moves.contains("F2:F4"));
+        assertTrue(moves.contains("G2:G3"));
+        assertTrue(moves.contains("G2:G4"));
+        assertTrue(moves.contains("H2:H3"));
+        assertTrue(moves.contains("H2:H4"));
+        //knight moves
+        assertTrue(moves.contains("B1:A3"));
+        assertTrue(moves.contains("B1:C3"));
+        assertTrue(moves.contains("G1:H3"));
+        assertTrue(moves.contains("G1:F3"));
+        assertEquals(20,moves.size());
+        player.playMove("E2:E4");
+        assertTrue(opponent.getAvailableMoves().contains("D7:D5"));
+        opponent.playMove("D7:D5");
+        moves = player.getAvailableMoves();
+        //pawn moves
+        assertTrue(moves.contains("A2:A3"));
+        assertTrue(moves.contains("A2:A4"));
+        assertTrue(moves.contains("B2:B3"));
+        assertTrue(moves.contains("B2:B4"));
+        assertTrue(moves.contains("C2:C3"));
+        assertTrue(moves.contains("C2:C4"));
+        assertTrue(moves.contains("D2:D3"));
+        assertTrue(moves.contains("D2:D4"));
+        assertTrue(moves.contains("E4:E5"));
+        assertTrue(moves.contains("E4:D5")); //pawn takes pawn
+        assertTrue(moves.contains("F2:F3"));
+        assertTrue(moves.contains("F2:F4"));
+        assertTrue(moves.contains("G2:G3"));
+        assertTrue(moves.contains("G2:G4"));
+        assertTrue(moves.contains("H2:H3"));
+        assertTrue(moves.contains("H2:H4"));
+        //knight moves
+        assertTrue(moves.contains("B1:A3"));
+        assertTrue(moves.contains("B1:C3"));
+        assertTrue(moves.contains("G1:H3"));
+        assertTrue(moves.contains("G1:F3"));
+        assertTrue(moves.contains("G1:E2"));
+        // king move
+        assertTrue(moves.contains("E1:E2"));
+        //queen moves
+        assertTrue(moves.contains("D1:E2"));
+        assertTrue(moves.contains("D1:F3"));
+        assertTrue(moves.contains("D1:G4"));
+        assertTrue(moves.contains("D1:H5"));
+        //bishop moves
+        assertTrue(moves.contains("F1:E2"));
+        assertTrue(moves.contains("F1:D3"));
+        assertTrue(moves.contains("F1:C4"));
+        assertTrue(moves.contains("F1:B5"));
+        assertTrue(moves.contains("F1:A6"));
+        assertEquals(31,moves.size());
+        player.playMove("F1:B5");
+
+        // opponent in check
+        moves = opponent.getAvailableMoves();
+        //pawn move
+        assertTrue(moves.contains("C7:C6"));
+        //knight moves
+        assertTrue(moves.contains("B8:C6"));
+        assertTrue(moves.contains("B8:D7"));
+        //bishop move
+        assertTrue(moves.contains("C8:D7"));
+        //queen move
+        assertTrue(moves.contains("D8:D7"));
+        assertEquals(5,moves.size());
+
+
+
     }
 
     /**
@@ -268,5 +359,39 @@ public class PlayerTest {
         assertFalse(b[0].getActions() instanceof StartBehavior);
         assertTrue(b[1].getActions() instanceof StartBehavior);
         assertFalse(b[2].getActions() instanceof StartBehavior);
+    }
+
+    /**
+     * testing pawn promotion
+     */
+    @Test
+    public void testPlayMovePawnPromotion() {
+        ChessPiece[] w = {new King(new KingBehaviorStartStandard()), new Pawn(new PawnBehaviorStandard(false))};
+        ChessPiece[] b = {new King(new KingBehaviorStartStandard()), new Pawn(new PawnBehaviorStandard(true))};
+        player.addPieces(w);
+        opponent.addPieces(b);
+        player.getBoard().get("A7").setPiece(w[1]);
+        opponent.getBoard().get("H2").setPiece(b[1]);
+
+        //whites pawn promotion
+        assertEquals(w[1], player.getBoard().get("A7").getPiece());
+        assertNull(player.getBoard().get("A8").getPiece());
+        player.playMove("A7:A8");
+        ChessPiece result = player.getBoard().get("A8").getPiece();
+        assertTrue(player.getPieces().contains(result));
+        assertTrue(result instanceof Queen);
+        assertTrue(result.getActions() instanceof QueenBehaviorStandard);
+        assertFalse(player.getPieces().contains(w[1]));
+
+        //blacks pawn promotion
+        assertEquals(b[1], player.getBoard().get("H2").getPiece());
+        assertNull(player.getBoard().get("H1").getPiece());
+        opponent.playMove("H2:H1");
+        result = player.getBoard().get("H1").getPiece();
+        assertTrue(opponent.getPieces().contains(result));
+        assertTrue(result instanceof Queen);
+        assertTrue(result.getActions() instanceof QueenBehaviorStandard);
+        assertFalse(player.getPieces().contains(b[1]));
+
     }
 }

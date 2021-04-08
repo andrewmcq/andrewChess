@@ -29,8 +29,10 @@ public class PawnBehaviorStartStandard implements ActionsBehavior, StartBehavior
         else {
             mult = 1;
         }
-        String move = Character.toString(position.charAt(0)) + Character.toString(position.charAt(1)+ (2*mult));
-        if (!board.isOccupied(move)) possibleActions.add(move);
+        if (possibleActions.contains(Character.toString(position.charAt(0))+Character.toString(position.charAt(1) +mult))) {
+            String move = Character.toString(position.charAt(0)) + Character.toString(position.charAt(1)+ (2*mult));
+            if (!board.isOccupied(move)) possibleActions.add(move);
+        }
         return possibleActions;
     }
 

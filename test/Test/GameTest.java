@@ -4,6 +4,9 @@ import JavaChess.*;
 import JavaChess.SetUp.StandardGame;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.*;
+
+import java.util.ArrayList;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -56,5 +59,19 @@ public class GameTest {
         standardSetUp();
         Player p = game.getPlayers()[0];
         assertEquals(game.getMoves(),p.getAvailableMoves());
+    }
+
+    @Test
+    void testMoves() {
+        ArrayList<String> moves;
+        standardSetUp();
+        moves = game.getMoves();
+        game.playMove("E2:E4");
+        moves = game.getMoves();
+        game.playMove("D7:D5");
+        moves = game.getMoves();
+        game.playMove("E4:D5");
+
+
     }
 }
