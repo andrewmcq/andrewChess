@@ -360,4 +360,38 @@ public class PlayerTest {
         assertTrue(b[1].getActions() instanceof StartBehavior);
         assertFalse(b[2].getActions() instanceof StartBehavior);
     }
+
+    /**
+     * testing pawn promotion
+     */
+    @Test
+    public void testPlayMovePawnPromotion() {
+        ChessPiece[] w = {new King(new KingBehaviorStartStandard()), new Pawn(new PawnBehaviorStandard(false))};
+        ChessPiece[] b = {new King(new KingBehaviorStartStandard()), new Pawn(new PawnBehaviorStandard(true))};
+        player.addPieces(w);
+        opponent.addPieces(b);
+        player.getBoard().get("A7").setPiece(w[1]);
+        opponent.getBoard().get("H2").setPiece(b[1]);
+
+        //whites pawn promotion
+        assertEquals(w[1], player.getBoard().get("A7").getPiece());
+        assertNull(player.getBoard().get("A8").getPiece());
+        player.playMove("A7:A8");
+        ChessPiece result = player.getBoard().get("A8").getPiece();
+        assertTrue(player.getPieces().contains(result));
+        assertTrue(result instanceof Queen);
+        assertTrue(result.getActions() instanceof QueenBehaviorStandard);
+        assertFalse(player.getPieces().contains(w[1]));
+
+        //blacks pawn promotion
+        assertEquals(b[1], player.getBoard().get("H2").getPiece());
+        assertNull(player.getBoard().get("H1").getPiece());
+        opponent.playMove("H2:H1");
+        result = player.getBoard().get("H1").getPiece();
+        assertTrue(opponent.getPieces().contains(result));
+        assertTrue(result instanceof Queen);
+        assertTrue(result.getActions() instanceof QueenBehaviorStandard);
+        assertFalse(player.getPieces().contains(b[1]));
+
+    }
 }

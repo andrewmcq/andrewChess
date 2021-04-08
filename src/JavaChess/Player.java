@@ -2,8 +2,11 @@ package JavaChess;
 
 import JavaChess.ChessPieces.ActionsBehaviors.ActionsBehavior;
 import JavaChess.ChessPieces.ActionsBehaviors.KingBehaviorStandard;
+import JavaChess.ChessPieces.ActionsBehaviors.QueenBehaviorStandard;
 import JavaChess.ChessPieces.ActionsBehaviors.StartBehavior;
 import JavaChess.ChessPieces.ChessPiece;
+import JavaChess.ChessPieces.Pawn;
+import JavaChess.ChessPieces.Queen;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,6 +44,13 @@ public class Player {
             else { //short/right castle
                 this.playMove("H"+Character.toString(start.charAt(1))+":F"+Character.toString(start.charAt(1)));
             }
+        }
+        //auto promote pawns to a queen
+        if(movedPiece instanceof Pawn && (end.charAt(1)=='1' || end.charAt(1)=='8')) {
+            ChessPiece q = new Queen(new QueenBehaviorStandard());
+            pieces.remove(movedPiece);
+            pieces.add(q);
+            board.get(start).setPiece(q);
         }
         //moves the king
         board.makeMove(move);

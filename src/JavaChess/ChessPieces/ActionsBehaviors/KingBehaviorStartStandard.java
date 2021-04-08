@@ -21,11 +21,11 @@ public class KingBehaviorStartStandard implements ActionsBehavior,StartBehavior{
         //white castling
         if (pos.equals("E1")) {
             //castling long
-            if (board.get("A1").getPiece().getActions() instanceof StartBehavior &&
+            if (board.get("A1").getPiece()!= null&& board.get("A1").getPiece().getActions() instanceof StartBehavior &&
                     !board.isOccupied("D1") && !board.isOccupied("C1") && !board.isOccupied("B1")) {
                 actions.add("C1");
             }
-            if (board.get("H1").getPiece().getActions() instanceof StartBehavior &&
+            if (board.get("H1").getPiece()!= null&&board.get("H1").getPiece().getActions() instanceof StartBehavior &&
                     !board.isOccupied("F1") && !board.isOccupied("G1")) {
                 actions.add("G1");
             }
@@ -33,12 +33,12 @@ public class KingBehaviorStartStandard implements ActionsBehavior,StartBehavior{
         //black castling
         if (pos.equals("E8")) {
             //long
-            if (board.get("A8").getPiece().getActions() instanceof StartBehavior &&
+            if (board.get("A8").getPiece()!= null&&board.get("A8").getPiece().getActions() instanceof StartBehavior &&
                     !board.isOccupied("D8") && !board.isOccupied("C8") && !board.isOccupied("B8")) {
                 actions.add("C8");
             }
             //short
-            if (board.get("H8").getPiece().getActions() instanceof StartBehavior &&
+            if (board.get("H8").getPiece()!= null&&board.get("H8").getPiece().getActions() instanceof StartBehavior &&
                     !board.isOccupied("F8") && !board.isOccupied("G8")) {
                 actions.add("G8");
             }

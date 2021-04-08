@@ -24,6 +24,7 @@ public class ChessGUI {
         chessBoardSquares = new ChessButton[8][8];
         game = new Game();
         game.setUp(new StandardGame());
+        board = game.getPlayers()[0].getBoard();
 
         //setting each square of the board
         for (int i=0; i<8; i++) {
@@ -130,17 +131,10 @@ public class ChessGUI {
                 //removing the moveTo functionality
                 for (int i=0; i<8;i++) {
                     for (int j=0; j<8;j++) {
-                        if(chessBoardSquares[i][j].getBackground() == Color.GREEN) {
+                        if(chessBoardSquares[i][j].getMoveTo()) {
                             chessBoardSquares[i][j].removeActionListener(chessBoardSquares[i][j].getCurAL());
-                        }
-                    }
-                }
-                //removing actions from previous moveTo squares
-                for (int i=0; i<8; i++) {
-                    for(int j=0; j<8; j++) {
-                        ChessButton button = chessBoardSquares[i][j];
-                        if (button.getMoveTo()) {
-                            button.removeActionListener(button.getCurAL());
+                            chessBoardSquares[i][j].setMoveTo(false);
+                            chessBoardSquares[i][j].setCurAL(null);
                         }
                     }
                 }
@@ -177,10 +171,14 @@ public class ChessGUI {
         button.addActionListener(moveto);
     }
 
-    public void resetActionListeners() {
+    /**
+     * removes all action listeners from the chess buttons, and sets the moveto attribute to false
+     */
+    public synchronized void resetActionListeners() {
         for (int i=0; i<8; i++){
             for (int j=0; j<8; j++) {
                 ChessButton b = chessBoardSquares[i][j];
+                b.setMoveTo(false);
                 if (b.getCurAL() != null) {
                     b.removeActionListener(b.getCurAL());
                 }
@@ -188,48 +186,9 @@ public class ChessGUI {
         }
     }
 
-    //Sets the images for chess pieces
-//    public void setChessImages() {
-//        //white pieces
-//        chessBoardSquares[0][0].setIcon(new ImageIcon("./assets/whiteRook.png"));
-//        chessBoardSquares[1][0].setIcon(new ImageIcon("./assets/whiteKnight.png"));
-//        chessBoardSquares[2][0].setIcon(new ImageIcon("./assets/whiteBishop.png"));
-//        chessBoardSquares[3][0].setIcon(new ImageIcon("./assets/whiteQueen.png"));
-//        chessBoardSquares[4][0].setIcon(new ImageIcon("./assets/whiteKing.png"));
-//        chessBoardSquares[5][0].setIcon(new ImageIcon("./assets/whiteBishop.png"));
-//        chessBoardSquares[6][0].setIcon(new ImageIcon("./assets/whiteKnight.png"));
-//        chessBoardSquares[7][0].setIcon(new ImageIcon("./assets/whiteRook.png"));
-//        for (int i=0; i<8; i++) {
-//            chessBoardSquares[i][1].setIcon(new ImageIcon("./assets/whitePawn.png"));
-//        }
-//        //black pieces
-//        chessBoardSquares[0][7].setIcon(new ImageIcon("./assets/blackRook.png"));
-//        chessBoardSquares[1][7].setIcon(new ImageIcon("./assets/blackKnight.png"));
-//        chessBoardSquares[2][7].setIcon(new ImageIcon("./assets/blackBishop.png"));
-//        chessBoardSquares[3][7].setIcon(new ImageIcon("./assets/blackQueen.png"));
-//        chessBoardSquares[4][7].setIcon(new ImageIcon("./assets/blackKing.png"));
-//        chessBoardSquares[5][7].setIcon(new ImageIcon("./assets/blackBishop.png"));
-//        chessBoardSquares[6][7].setIcon(new ImageIcon("./assets/blackKnight.png"));
-//        chessBoardSquares[7][7].setIcon(new ImageIcon("./assets/blackRook.png"));
-//        for (int i=0; i<8; i++) {
-//            chessBoardSquares[i][6].setIcon(new ImageIcon("./assets/blackPawn.png"));
-//        }
-//    }
-
     /**
-     * makes move in game class and updates icon moves
+     * iterates of the Board class and sets the chess icons properly based on it
      */
-//    public void makeMove(String pos, String move) {
-//        int[] start=  board.convertCoord(pos);
-//        int[] end = board.convertCoord(move);
-//        chessBoardSquares[end[0]][end[1]].setIcon(chessBoardSquares[start[0]][start[1]].getIcon());
-//        chessBoardSquares[start[0]][start[1]].setIcon(null);
-//        if(game.getPlayers()[game.getTurnFlag()].isCastle(pos+":"+move)) {
-//
-//        }
-//        game.playMove(pos+":"+move);
-//    }
-
     public void updateBoardIcons() {
         for (int i=0; i<8; i++) {
             for (int j=0; j<8; j++) {
@@ -285,8 +244,7 @@ public class ChessGUI {
     }
 
     //getters
-    public JPanel getBoard(){
-        return chessBoard;
-    }
+    public JPanel getBoard() { return chessBoard; }
     public ChessButton[][] getChessBoardSquares() { return chessBoardSquares; }
+    public Game getGame() { return game; }
 }
