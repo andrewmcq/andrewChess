@@ -21,6 +21,7 @@ public class Main {
                 f.pack();
                 // ensures the minimum size is enforced.
                 f.setMinimumSize(f.getSize());
+                f.setMaximumSize(f.getSize());
                 f.setVisible(true);
             }
         };

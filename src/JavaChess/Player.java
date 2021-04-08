@@ -136,7 +136,7 @@ public class Player {
     /**
      * helper function to check if a move is an attempt to castle
      */
-    private boolean isCastle(String move) {
+    public boolean isCastle(String move) {
         String start = Character.toString(move.charAt(0)) + Character.toString(move.charAt(1));
         String end = Character.toString(move.charAt(3)) + Character.toString(move.charAt(4));
         ActionsBehavior kTest = new KingBehaviorStandard();

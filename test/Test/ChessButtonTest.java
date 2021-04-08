@@ -8,8 +8,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ChessButtonTest {
     private ChessButton button;
@@ -31,5 +30,12 @@ public class ChessButtonTest {
         button.setCurAL(al);
         assertEquals(al,button.getCurAL());
 
+    }
+
+    @Test
+    public void testMoveTo() {
+        assertNull(button.getCurAL());
+        button.setMoveTo(true);
+        assertTrue(button.getMoveTo());
     }
 }
