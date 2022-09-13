@@ -392,6 +392,28 @@ public class PlayerTest {
         assertTrue(result instanceof Queen);
         assertTrue(result.getActions() instanceof QueenBehaviorStandard);
         assertFalse(player.getPieces().contains(b[1]));
+    }
 
+    @Test
+    public void testPlayMoveEnPassant(){
+        Game g = new Game();
+        g.setUp(new StandardGame());
+        player = g.getPlayers()[0];
+        opponent = g.getPlayers()[1];
+        player.playMove("E2:E4");
+        opponent.playMove("E7:E6");
+        player.playMove("E4:E5");
+        opponent.playMove("D7:D5");
+        ChessPiece passantedPawn = player.getBoard().get("D5").getPiece();
+        ChessPiece passantingPawn = player.getBoard().get("E5").getPiece();
+        //checking avaliable moves contains en passant
+        assertTrue(player.getAvailableMoves().contains("E5:D6"));
+        player.playMove("E5:D6");
+        // checking D5 is now cleared with the taken pawn offf the board
+        assertNull(player.getBoard().get("D5").getPiece());
+        assertNull(player.getBoard().get(passantedPawn));
+        // checking that the pawn taking is in its correct place
+        assertTrue(player.getBoard().get("D6").getPiece()==passantingPawn);
+        assertFalse(opponent.getPieces().contains(passantedPawn));
     }
 }
