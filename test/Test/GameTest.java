@@ -71,7 +71,34 @@ public class GameTest {
         game.playMove("D7:D5");
         moves = game.getMoves();
         game.playMove("E4:D5");
+    }
 
-
+    @Test
+    void testThreefoldRepetition() {
+        ArrayList<String> moves;
+        standardSetUp();
+        //testing standard threefold
+        game.getMoves();
+        game.playMove("D2:D4"); // D pawn 2 forward
+        game.getMoves();
+        game.playMove("D7:D5"); // D pawn 2 forward
+        game.getMoves();
+        game.playMove("D1:D3"); // queen behind D pawn
+        game.getMoves();
+        game.playMove("D8:D6"); // queen behind D pawn
+        game.getMoves();
+        game.playMove("D3:D1"); //queen back to king
+        game.getMoves();
+        game.playMove("D6:D8"); //queen back to king : 2nd occourence of this position
+        game.getMoves();
+        game.playMove("D1:D3"); // queen behind D pawn
+        game.getMoves();
+        game.playMove("D8:D6"); // queen behind D pawn
+        game.getMoves();
+        game.playMove("D3:D1"); //queen back to king
+        game.getMoves();
+        game.playMove("D6:D8"); //queen back to king : 3 fold repetition game should end
+        moves = game.getMoves();
+        assertTrue(moves.size()==0);
     }
 }
