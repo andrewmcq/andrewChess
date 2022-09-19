@@ -14,6 +14,7 @@ public class Game {
     private Player[] players = new Player[2];
     private int turnFlag;
     private HashMap<String,Integer> repetitions = new HashMap<String, Integer>();
+    private int fiftyMovesCounter = 0;
 
     /**
      * Initializes nothing, all defaults/null
@@ -23,10 +24,11 @@ public class Game {
     }
 
     /**
-     * gets actions for current player
+     * gets actions for current player, meant to only be called once before each players makes a move.
      */
     public ArrayList<String> getMoves() {
-        if (updateRepetitions() ==3) {
+        //if threefold repetition or if fiftymoves without a take happen
+        if (updateRepetitions() ==3 || fiftyMovesCounter==100) {
             return new ArrayList<String>();
         }
         else {
@@ -38,7 +40,15 @@ public class Game {
      * plays move for current player and flips turns
      */
     public void playMove(String move) {
+        int startSize = players[1-turnFlag].getPieces().size();
+        String start = Character.toString(move.charAt(0)) + Character.toString(move.charAt(1));
+        String piece = players[turnFlag].getBoard().get(start).getPiece().getName();
         players[turnFlag].playMove(move);
+        //50 moves reset if the move made the opponent have one less piece, or if a pawn was moved
+        if (startSize != players[1-turnFlag].getPieces().size() || piece.charAt(0) =='p')
+            fiftyMovesCounter = 0;
+        else
+            fiftyMovesCounter += 1;
         swapTurns();
     }
 

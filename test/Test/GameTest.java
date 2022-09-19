@@ -1,6 +1,11 @@
 package Test;
 
 import JavaChess.*;
+import JavaChess.ChessPieces.ActionsBehaviors.KingBehaviorStartStandard;
+import JavaChess.ChessPieces.ActionsBehaviors.PawnBehaviorStartStandard;
+import JavaChess.ChessPieces.ChessPiece;
+import JavaChess.ChessPieces.King;
+import JavaChess.ChessPieces.Pawn;
 import JavaChess.SetUp.StandardGame;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.*;
@@ -73,6 +78,7 @@ public class GameTest {
         game.playMove("E4:D5");
     }
 
+    //Testing that the game doesn't return any playable moves one a threefold repetition occurs resulting in a draw
     @Test
     void testThreefoldRepetition() {
         ArrayList<String> moves;
@@ -100,5 +106,577 @@ public class GameTest {
         game.playMove("D6:D8"); //queen back to king : 3 fold repetition game should end
         moves = game.getMoves();
         assertTrue(moves.size()==0);
+    }
+
+    //Testing that after 50 consecutive moves with no pawn move or captures results in a draw
+    //a move is designated as both players completing a consecutive turn
+    @Test
+    void testFiftyMoveRule(){
+        //setting a board with only kings placed on e1 and e8
+        game = new Game();
+        Player[] players = game.getPlayers();
+        players[0] = new Player();
+        players[1] = new Player();
+        players[0].setOpponent(players[1]);
+        players[1].setOpponent(players[0]);
+        Board board = new Board();
+        players[0].setBoard(board);
+        players[1].setBoard(board);
+        ChessPiece[] whiteKing = new ChessPiece[1];
+        whiteKing[0] = new King(new KingBehaviorStartStandard());
+        ChessPiece[] blackKing = new ChessPiece[1];
+        blackKing[0] = new King(new KingBehaviorStartStandard());
+        players[0].addPieces(whiteKing);
+        players[1].addPieces(blackKing);
+        board.get("E1").setPiece(whiteKing[0]);
+        board.get("E8").setPiece(blackKing[0]);
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("E1:F1");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("E8:D8");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("F1:G1");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("D8:C8");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("G1:H1");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("C8:B8");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("H1:H2");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("B8:A8");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("H2:H3");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("A8:A7");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("H3:H4");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("A7:A6");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("H4:H5");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("A6:A5");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("H5:H6");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("A5:A4");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("H6:H7");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("A4:A3");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("H7:H8");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("A3:A2");
+
+        // ten moves above this
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("H8:G8");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("A2:A1");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("G8:F8");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("A1:B1");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("F8:E8");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("B1:C1");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("E8:D8");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("C1:D1");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("D8:C8");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("D1:E1");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("C8:B8");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("E1:F1");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("B8:A8");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("F1:G1");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("A8:A7");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("G1:H1");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("A7:A6");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("H1:H2");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("A6:A5");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("H2:H3");
+
+        //20 moves above this
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("A5:A4");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("H3:H4");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("A4:A3");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("H4:H5");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("A3:A2");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("H5:H6");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("A2:A1");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("H6:H7");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("A1:B1");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("H7:H8");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("B1:C1");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("H8:G8");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("C1:D1");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("G8:F8");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("D1:E1");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("F8:E8");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("E1:F1");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("E8:D8");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("F1:G1");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("D8:C8");
+
+        //30 moves above
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("G1:H1");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("C8:B8");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("H1:H2");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("B8:A8");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("H2:H3");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("A8:A7");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("H3:H4");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("A7:A6");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("H4:H5");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("A6:A5");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("H5:H6");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("A5:A4");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("H6:H7");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("A4:A3");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("H7:H8");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("A3:A2");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("H8:G8");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("A2:A1");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("G8:F8");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("A1:B1");
+
+        //40 moves above
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("F8:E8");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("B1:C1");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("E8:D8");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("C1:D1");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("D8:C8");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("D1:E1");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("C8:B8");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("E1:F1");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("B8:A8");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("F1:G1");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("A8:A7");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("G1:H1");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("A7:A6");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("H1:H2");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("A6:A5");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("H2:H3");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("A5:A4");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("H3:H4");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("A4:A3");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("H4:H5");
+
+        //50 moves above, now get moves should be empty.
+        assertEquals(0,game.getMoves().size());
+    }
+
+    //Testing that after 48 consecutive moves with a pawn capture resets the count
+    //a move is designated as both players completing a consecutive turn
+    @Test
+    void testFiftyMoveRuleReset(){
+        //setting a board with only kings placed on e1 and e8, and a pawn at e2
+        game = new Game();
+        Player[] players = game.getPlayers();
+        players[0] = new Player();
+        players[1] = new Player();
+        players[0].setOpponent(players[1]);
+        players[1].setOpponent(players[0]);
+        Board board = new Board();
+        players[0].setBoard(board);
+        players[1].setBoard(board);
+        ChessPiece[] whiteKing = new ChessPiece[2];
+        whiteKing[0] = new King(new KingBehaviorStartStandard());
+        whiteKing[1]= new Pawn(new PawnBehaviorStartStandard(false));
+        ChessPiece[] blackKing = new ChessPiece[1];
+        blackKing[0] = new King(new KingBehaviorStartStandard());
+        players[0].addPieces(whiteKing);
+        players[1].addPieces(blackKing);
+        board.get("E1").setPiece(whiteKing[0]);
+        board.get("E2").setPiece(whiteKing[1]);
+        board.get("E8").setPiece(blackKing[0]);
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("E1:F1");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("E8:D8");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("F1:G1");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("D8:C8");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("G1:H1");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("C8:B8");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("H1:H2");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("B8:A8");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("H2:H3");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("A8:A7");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("H3:H4");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("A7:A6");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("H4:H5");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("A6:A5");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("H5:H6");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("A5:A4");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("H6:H7");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("A4:A3");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("H7:H8");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("A3:A2");
+
+        // ten moves above this
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("H8:G8");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("A2:A1");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("G8:F8");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("A1:B1");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("F8:E8");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("B1:C1");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("E8:D8");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("C1:D1");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("D8:C8");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("D1:E1");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("C8:B8");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("E1:F1");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("B8:A8");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("F1:G1");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("A8:A7");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("G1:H1");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("A7:A6");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("H1:H2");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("A6:A5");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("H2:H3");
+
+        //20 moves above this
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("A5:A4");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("H3:H4");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("A4:A3");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("H4:H5");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("A3:A2");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("H5:H6");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("A2:A1");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("H6:H7");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("A1:B1");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("H7:H8");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("B1:C1");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("H8:G8");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("C1:D1");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("G8:F8");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("D1:E1");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("F8:E8");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("E1:F1");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("E8:D8");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("F1:G1");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("D8:C8");
+
+        //30 moves above
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("G1:H1");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("C8:B8");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("H1:H2");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("B8:A8");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("H2:H3");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("A8:A7");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("H3:H4");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("A7:A6");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("H4:H5");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("A6:A5");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("H5:H6");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("A5:A4");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("H6:H7");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("A4:A3");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("H7:H8");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("A3:A2");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("H8:G8");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("A2:A1");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("G8:F8");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("A1:B1");
+
+        //40 moves above
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("F8:E8");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("B1:C1");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("E8:D8");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("C1:D1");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("D8:C8");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("D1:E1");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("C8:B8");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("E1:F1");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("B8:A8");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("F1:G1");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("A8:A7");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("G1:H1");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("A7:A6");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("H1:H2");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("A6:A5");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("H2:H3");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("A5:A4");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("H3:H4");
+
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("E2:E4");
+        assertNotEquals(0,game.getMoves().size());
+        game.playMove("H4:H5");
+
+        //50 moves above, now get moves should be empty.
+        assertNotEquals(0,game.getMoves().size());
     }
 }
