@@ -9,6 +9,7 @@ import JavaChess.ChessPieces.*;
  */
 public class Board {
     private Square[][] board = new Square[8][8];
+    private String lastMove; //lastMove will take the form "startPos:endPos:pieceLetter", Letters are k q b n r p
 
     /**
      * Initializes whole board to 64 squares with null pieces and regular chess coordinates
@@ -33,6 +34,22 @@ public class Board {
         String end = Character.toString(move.charAt(3)) + Character.toString(move.charAt(4)) ;
         this.get(end).setPiece(this.get(start).getPiece());
         this.get(start).setPiece(null);
+
+        //Updating LastMove
+        char piece;
+        String pieceName = this.get(end).getPiece().getName();
+        switch (pieceName) {
+            case "king":
+                piece = 'k';
+                break;
+            case "knight":
+                piece = 'n';
+                break;
+            default:
+                piece = pieceName.charAt(0);
+                break;
+        }
+        setLastMove(move+':'+piece);
     }
 
     /**
@@ -57,7 +74,7 @@ public class Board {
     }
 
     /**
-     * Method that returns a board that has differnt memory for the board but is functionally the same
+     * Method that returns a board that has different memory for the board but is functionally the same
      */
     public Board copy() {
         Board newBoard = new Board();
@@ -94,7 +111,10 @@ public class Board {
 
     //getters for private vars
     public Square[][] getBoard() { return board; }
+    public String getLastMove() { return lastMove; }
 
     //setters for private vars
     public void setBoard(Square[][] board) { this.board = board; }
+    public void setLastMove(String lastMove) { this.lastMove = lastMove; }
+
 }

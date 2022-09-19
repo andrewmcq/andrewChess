@@ -122,6 +122,45 @@ public class PawnTest {
         assertEquals(2, moves.size());
     }
 
+    //testing that when a pawn  is moved two spaces, en passant is registered in candidate moves
+    @Test
+    public void testCandidateMovesStandardEnPassant(){
+        //En passant for white to the left
+        standardPawns();
+        blackPawn = new Pawn(new PawnBehaviorStartStandard(true));
+        board.get("C7").setPiece(blackPawn);
+        board.get("D5").setPiece(whitePawn);
+        board.makeMove("C7:C5");
+        moves = whitePawn.candidateMoves(board);
+        assertTrue(moves.contains("C6"));
+
+        //En Passant for white to the right
+        board = new Board();
+        board.get("E7").setPiece(blackPawn);
+        board.get("D5").setPiece(whitePawn);
+        board.makeMove("E7:E5");
+        moves = whitePawn.candidateMoves(board);
+        assertTrue(moves.contains("E6"));
+
+        //En Passant for black to left
+        board = new Board();
+        standardPawns();
+        whitePawn = new Pawn(new PawnBehaviorStartStandard(false));
+        board.get("C2").setPiece(whitePawn);
+        board.get("D4").setPiece(blackPawn);
+        board.makeMove("C2:C4");
+        moves = blackPawn.candidateMoves(board);
+        assertTrue(moves.contains("C3"));
+
+        //En Passant for black to right
+        board = new Board();
+        board.get("E2").setPiece(whitePawn);
+        board.get("D4").setPiece(blackPawn);
+        board.makeMove("E2:E4");
+        moves = blackPawn.candidateMoves(board);
+        assertTrue(moves.contains("E3"));
+    }
+
     //tests starting moves to make sure there is a the double move available to unmoved pawns;
     @Test
     public void testCandidateMovesStartStandard() {

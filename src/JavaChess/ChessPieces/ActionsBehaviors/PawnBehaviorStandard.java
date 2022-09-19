@@ -46,6 +46,16 @@ public class PawnBehaviorStandard implements ActionsBehavior {
         if (x >= 'A' && x <= 'H' && y >= '1' && y <= '8' && board.isOccupied(newPos)) {
             possibleActions.add(newPos);
         }
+
+        //checking En Passant
+        String prevMove = board.getLastMove();
+        //only true if last move was a double pawn move
+        if (prevMove!=null&&prevMove.charAt(6)=='p' && java.lang.Math.abs(prevMove.charAt(1) - prevMove.charAt(4)) ==2){
+            //checks if the en passant is 1 over from the column, and then is next to it
+            if (java.lang.Math.abs(prevMove.charAt(0) - position.charAt(0))==1 && position.charAt(1) == prevMove.charAt(4)){
+                possibleActions.add(Character.toString(prevMove.charAt(3))+Character.toString(y));
+            }
+        }
         return possibleActions;
     }
 }

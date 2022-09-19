@@ -28,7 +28,8 @@ public abstract class ChessPiece {
     public void setActions(ActionsBehavior actions) { this.actions = actions; }
 
     //getters for private vars
-    public ActionsBehavior getActions() {return actions; }
+    public ActionsBehavior getActions() { return actions; }
+    public String getName() { return name; }
 
 
 }

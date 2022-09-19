@@ -1,11 +1,13 @@
 package Test;
 import JavaChess.*;
 
-import JavaChess.ChessPieces.ActionsBehaviors.QueenBehaviorStandard;
+import JavaChess.ChessPieces.ActionsBehaviors.*;
 import JavaChess.ChessPieces.Bishop;
 import JavaChess.ChessPieces.ChessPiece;
 import JavaChess.ChessPieces.Pawn;
 import JavaChess.ChessPieces.Queen;
+import JavaChess.ChessPieces.King;
+import JavaChess.ChessPieces.Knight;
 import JavaChess.Square;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.*;
@@ -124,4 +126,33 @@ public class BoardTest {
         assertEquals(board.getBoard(),b.getBoard());
     }
 
+    /**
+     * testing setting lastMove properly, via make move.
+     * last move in form "oldPos,newPos,piece char"
+     */
+    @Test
+    public void testSetLastMove() {
+        //testing moving a queen from one vertically to e8, also testing q
+        board.get("E3").setPiece(new Queen(new QueenBehaviorStandard()));
+        board.makeMove("E3:E8");
+        assertEquals("E3:E8:q",board.getLastMove());
+
+        //testing en passant scenario/ and p
+        board.get("B7").setPiece(new Pawn(new PawnBehaviorStartStandard(true)));
+        board.get("C6").setPiece(new Pawn(new PawnBehaviorStandard(true)));
+        board.makeMove("B7:B5");
+        assertEquals("B7:B5:p",board.getLastMove());
+        board.makeMove("C6:B5");
+        assertEquals("C6:B5:p",board.getLastMove());
+
+        //testing king
+        board.get("A1").setPiece(new King(new KingBehaviorStandard()));
+        board.makeMove("A1:B2");
+        assertEquals("A1:B2:k",board.getLastMove());
+
+        //testing knight
+        board.get("A2").setPiece(new Knight(new KnightBehaviorStandard()));
+        board.makeMove("A2:C1");
+        assertEquals("A2:C1:n",board.getLastMove());
+    }
 }

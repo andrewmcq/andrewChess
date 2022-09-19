@@ -45,6 +45,10 @@ public class Player {
                 this.playMove("H"+Character.toString(start.charAt(1))+":F"+Character.toString(start.charAt(1)));
             }
         }
+        //If en passant remove the piece that is captured
+        if (isEnPassant(move)) {
+            board.get(Character.toString(end.charAt(0)) + Character.toString(start.charAt(1))).setPiece(null);
+        }
         //auto promote pawns to a queen
         if(movedPiece instanceof Pawn && (end.charAt(1)=='1' || end.charAt(1)=='8')) {
             ChessPiece q = new Queen(new QueenBehaviorStandard());
@@ -152,6 +156,20 @@ public class Player {
         ActionsBehavior kTest = new KingBehaviorStandard();
         if (board.get(start).getPiece() == pieces.get(0) && !kTest.actions(pieces.get(0),board).contains(end)){
             return true;
+        }
+        return false;
+    }
+
+    /**
+     * helper function to check if a move is an en passant
+     */
+    private boolean isEnPassant(String move) {
+        String start = Character.toString(move.charAt(0)) + Character.toString(move.charAt(1));
+        String end = Character.toString(move.charAt(3)) + Character.toString(move.charAt(4));
+        if (board.get(start).getPiece() != null && board.get(start).getPiece() instanceof Pawn) {
+            if (board.get(end).getPiece() == null && java.lang.Math.abs(start.charAt(0) - end.charAt(0))==1) {
+                return true;
+            }
         }
         return false;
     }
